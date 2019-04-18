@@ -1,11 +1,27 @@
 {{ partial "header.html" . }}
 <div class="article-meta">
 <h1><span class="title">{{ .Title | markdownify }}</span></h1>
-{{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
-{{ if (gt .Params.date 0) }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }}
+{{ with .Description }}<h2><span class="subtitle">{{ . | markdownify }}</span></h2> {{ end }}
+{{ with .Params.author }}<h3 class="author">{{ . }}</h3>{{ end }}
+{{ if (gt .Params.date 0) }}<h3 class="date">{{ .Date.Format "January 02, 2006" }}</h3>{{ end }}
+{{ with .Params.resources }}
+<ul class="article-resources">
+    {{ range . }}
+    <li>
+        <a href="{{ .url }}" {{ with .title }} title="{{ . }} " {{ end }}>
+            <button>
+                {{ with .glyph }}<img src="/svg/si-glyph-{{ . }}.svg"></img>{{ end }}
+                {{ with .text }}{{ .| markdownify }}{{ end }}
+            </button>
+        </a>
+    </li>
+    {{ end }}
+</ul>
+{{ end }}
 </div>
 
 <main>
+{{ with .Params.blurb }} <div class="blurb"> {{ . }} </div> {{ end }}
 {{ .Content }}
 </main>
 
